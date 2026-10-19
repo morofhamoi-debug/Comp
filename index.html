@@ -1,583 +1,745 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neon Gold Casino Simulator</title>
+    <title>1WIN PRIME - Ultimate Casino & Case Simulator</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        dark: {
-                            900: '#090a0f',
-                            800: '#121420',
-                            700: '#1a1d30',
-                            600: '#252a45'
-                        },
-                        neon: {
+                        brand: {
+                            dark: '#07090e',
+                            card: '#0e121d',
+                            accent: '#00f0ff',
+                            purple: '#8a2be2',
                             gold: '#ffd700',
-                            cyan: '#00f3ff',
-                            purple: '#b026ff',
-                            red: '#ff2a6d',
-                            green: '#05ffa1'
+                            rose: '#ff0055',
+                            green: '#00ff88'
                         }
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                    boxShadow: {
+                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.4)',
+                        'neon-gold': '0 0 25px rgba(255, 215, 0, 0.5)',
+                        'neon-purple': '0 0 20px rgba(138, 43, 226, 0.4)',
+                        'neon-rose': '0 0 20px rgba(255, 0, 85, 0.4)',
                     }
                 }
             }
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap');
         
-        body {
-            font-family: 'Inter', sans-serif;
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
-            background-color: #090a0f;
-            color: #f3f4f6;
+        }
+
+        body {
+            background-color: #07090e;
+            color: #f1f5f9;
             overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(18, 20, 32, 0.6);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #252a45;
-            border-radius: 4px;
-        }
-
-        /* Glassmorphism Styling */
+        /* Glassmorphism Classes */
         .glass-panel {
-            background: rgba(26, 29, 48, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(14, 18, 29, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .glass-card {
-            background: linear-gradient(135deg, rgba(37, 42, 69, 0.4), rgba(18, 20, 32, 0.6));
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(135deg, rgba(22, 28, 45, 0.7), rgba(10, 13, 22, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        /* Glow effects */
-        .glow-gold { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4)); }
-        .glow-cyan { filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.4)); }
-        .glow-purple { filter: drop-shadow(0 0 10px rgba(176, 38, 255, 0.4)); }
-        .glow-red { filter: drop-shadow(0 0 10px rgba(255, 42, 109, 0.4)); }
-
-        /* Custom Animations */
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.03); }
+        .glass-card:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 8px 25px -5px rgba(0, 240, 255, 0.15);
         }
 
-        .pulse-animation {
-            animation: pulse-glow 2s infinite ease-in-out;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07090e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
         }
 
-        /* Case Roulette Line Marker */
+        /* Case Roulette Reel Center Marker */
         .case-marker {
             position: absolute;
             top: 0;
             bottom: 0;
             left: 50%;
-            width: 3px;
+            width: 4px;
             background: #ffd700;
-            box-shadow: 0 0 12px #ffd700;
-            z-index: 20;
+            box-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700;
+            z-index: 30;
             transform: translateX(-50%);
+        }
+        .case-marker::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -8px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 12px solid #ffd700;
+        }
+        .case-marker::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: -8px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 12px solid #ffd700;
+        }
+
+        /* Animated Pulse Lights */
+        @keyframes glowing-border {
+            0% { border-color: rgba(0, 240, 255, 0.3); }
+            50% { border-color: rgba(138, 43, 226, 0.6); }
+            100% { border-color: rgba(0, 240, 255, 0.3); }
+        }
+        .pulse-border {
+            animation: glowing-border 3s infinite ease-in-out;
+        }
+
+        /* Hide scrollbars for slick sliders */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 3D Tilt Card Effect */
+        .tilt-card {
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen bg-dark-900 text-gray-100 pb-20 md:pb-0">
+<body class="min-h-screen flex flex-col relative pb-20 md:pb-0">
 
-    <!-- Top Header Bar (Metrics) -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-gray-800 px-4 py-3">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <!-- Brand -->
-            <div class="flex items-center space-x-2">
-                <svg class="w-8 h-8 glow-gold" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="url(#gold-grad)"/>
-                    <path d="M2 17L12 22L22 17" stroke="url(#gold-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="url(#gold-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <defs>
-                        <linearGradient id="gold-grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#FFD700"/>
-                            <stop offset="1" stop-color="#FF8C00"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span class="font-black text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-500">
-                    NEON<span class="text-neon-cyan">CASINO</span>
-                </span>
+    <!-- Particle Background Canvas -->
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- TOP NAVBAR / HEADER -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-gray-800/80 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('crash')">
+                <div class="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-pink-500 p-[2px] shadow-neon-cyan">
+                    <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-brand-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-1">
+                        <span class="font-black text-xl tracking-wider text-white">1WIN</span>
+                        <span class="font-black text-xl text-brand-accent tracking-wider">PRIME</span>
+                    </div>
+                    <span class="text-[10px] text-gray-400 font-bold tracking-widest block -mt-1 uppercase">VIP SIMULATOR</span>
+                </div>
             </div>
 
-            <!-- Stats (Level, Coins, Gems) -->
-            <div class="flex items-center space-x-3 md:space-x-6 text-sm">
-                <!-- Level / XP -->
-                <div class="hidden sm:flex flex-col items-end">
-                    <div class="flex items-center space-x-1 font-bold text-xs text-gray-400">
-                        <span>LVL <span id="user-level" class="text-white">1</span></span>
-                    </div>
-                    <div class="w-20 h-1.5 bg-dark-800 rounded-full overflow-hidden mt-1 border border-gray-700">
-                        <div id="xp-bar" class="h-full bg-gradient-to-r from-neon-cyan to-neon-purple w-1/4 transition-all duration-300"></div>
+            <!-- Player Stats (Level, VIP, XP) -->
+            <div class="hidden md:flex items-center space-x-6">
+                <!-- VIP Badge -->
+                <div class="flex items-center space-x-2 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl">
+                    <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    <div class="flex flex-col">
+                        <span id="vip-tier" class="text-xs font-black text-amber-400 tracking-wide">GOLD VIP</span>
+                        <span class="text-[9px] text-gray-400 font-semibold">2.5x XP Boost</span>
                     </div>
                 </div>
 
-                <!-- Balance Coins -->
-                <div class="flex items-center bg-dark-800/80 border border-yellow-500/30 rounded-full px-3 py-1 space-x-2 glow-gold">
-                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <circle cx="10" cy="10" r="8" fill="#FFD700"/>
-                        <circle cx="10" cy="10" r="5" fill="#B8860B"/>
-                        <path d="M10 7v6M8 9h4" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                    <span id="balance-coins" class="font-black text-yellow-400 tracking-wide">1,000</span>
+                <!-- XP Bar -->
+                <div class="flex flex-col w-32">
+                    <div class="flex justify-between text-xs font-bold mb-1">
+                        <span class="text-gray-400">Level <span id="user-lvl" class="text-white">12</span></span>
+                        <span id="user-xp-pct" class="text-brand-accent">65%</span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-800 rounded-full overflow-hidden p-[1px] border border-gray-700">
+                        <div id="user-xp-bar" class="h-full bg-gradient-to-r from-brand-accent to-brand-purple rounded-full w-[65%] transition-all duration-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balance & Deposit Controls -->
+            <div class="flex items-center space-x-3">
+                <!-- Balance Display -->
+                <div class="flex items-center bg-brand-dark/90 border border-brand-accent/40 rounded-xl px-3.5 py-1.5 space-x-2 shadow-neon-cyan">
+                    <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-yellow-400 to-amber-600 flex items-center justify-center font-black text-[11px] text-dark">
+                        $
+                    </div>
+                    <span id="balance-display" class="font-black text-base text-white tracking-wide">10,000.00</span>
                 </div>
 
-                <!-- Gems / Tokens -->
-                <div class="flex items-center bg-dark-800/80 border border-cyan-500/30 rounded-full px-3 py-1 space-x-2">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" fill="url(#gem-grad)"/>
-                        <defs>
-                            <linearGradient id="gem-grad" x1="0" y1="0" x2="24" y2="24">
-                                <stop stop-color="#00F3FF"/>
-                                <stop offset="1" stop-color="#0066FF"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <span id="balance-gems" class="font-bold text-neon-cyan">50</span>
-                </div>
+                <!-- Quick Deposit Modal Trigger -->
+                <button onclick="openDepositModal()" class="bg-gradient-to-r from-brand-accent to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-dark-900 font-black px-3.5 py-2 rounded-xl text-xs flex items-center space-x-1 transition-all transform active:scale-95 shadow-neon-cyan">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    <span class="hidden sm:inline text-black">DEMO CASH</span>
+                </button>
+
+                <!-- Audio Toggle -->
+                <button onclick="toggleAudio()" id="audio-toggle-btn" class="p-2.5 glass-card rounded-xl text-gray-400 hover:text-brand-accent transition-colors">
+                    <svg id="audio-icon-on" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+                    <svg id="audio-icon-off" class="w-5 h-5 hidden text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- App Container -->
-    <div class="max-w-6xl mx-auto w-full flex-grow flex flex-col p-4 md:p-6">
-        
-        <!-- Navigation Tabs -->
-        <nav class="flex space-x-2 overflow-x-auto pb-2 mb-6 no-scrollbar border-b border-gray-800">
-            <button onclick="switchTab('cases')" id="tab-cases" class="tab-btn active px-4 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all duration-200 bg-gradient-to-r from-amber-500 to-yellow-600 text-dark-900 shadow-lg shadow-amber-500/20">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                <span>Cases</span>
+    <!-- MAIN APP WRAPPER -->
+    <div class="max-w-7xl mx-auto w-full flex-grow flex flex-col p-4 md:p-6 z-10">
+
+        <!-- NAV TABS (DESKTOP) -->
+        <nav class="hidden md:flex items-center space-x-2 overflow-x-auto pb-3 mb-6 no-scrollbar border-b border-gray-800">
+            <button onclick="switchTab('crash')" id="tab-btn-crash" class="nav-tab active px-5 py-3 rounded-2xl font-extrabold text-sm flex items-center space-x-2 transition-all bg-gradient-to-r from-brand-accent to-blue-600 text-dark-900 shadow-neon-cyan">
+                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                <span class="text-black">CRASH ROCKET</span>
             </button>
-            <button onclick="switchTab('crash')" id="tab-crash" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-200">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                <span>Crash</span>
+            <button onclick="switchTab('cases')" id="tab-btn-cases" class="nav-tab px-5 py-3 rounded-2xl font-extrabold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                <span>CS CASES</span>
             </button>
-            <button onclick="switchTab('roulette')" id="tab-roulette" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-200">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="M12 3v18M3 12h18"/></svg>
-                <span>Roulette</span>
+            <button onclick="switchTab('mines')" id="tab-btn-mines" class="nav-tab px-5 py-3 rounded-2xl font-extrabold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+                <span>MINES</span>
             </button>
-            <button onclick="switchTab('mines')" id="tab-mines" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-200">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
-                <span>Mines</span>
+            <button onclick="switchTab('wheel')" id="tab-btn-wheel" class="nav-tab px-5 py-3 rounded-2xl font-extrabold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+                <span>WHEEL 500x</span>
             </button>
-            <button onclick="switchTab('clicker')" id="tab-clicker" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-200">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                <span>Earn</span>
+            <button onclick="switchTab('clicker')" id="tab-btn-clicker" class="nav-tab px-5 py-3 rounded-2xl font-extrabold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>TAP VAULT</span>
             </button>
-            <button onclick="switchTab('inventory')" id="tab-inventory" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-200 ml-auto">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1a2 2 0 01-2 2M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-                <span>Vault</span>
+            <button onclick="switchTab('inventory')" id="tab-btn-inventory" class="nav-tab px-5 py-3 rounded-2xl font-extrabold text-sm flex items-center space-x-2 text-gray-400 hover:text-white transition-all ml-auto">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1a2 2 0 01-2 2M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                <span>INVENTORY & UPGRADE</span>
             </button>
         </nav>
 
-        <!-- MAIN GAME VIEW CONTAINER -->
-        <main class="flex-grow flex flex-col justify-center">
+        <!-- Dynamic Content Containers -->
 
-            <!-- 1. CASE OPENING SECTION -->
-            <section id="game-cases" class="game-section flex flex-col space-y-6">
-                <!-- Case Selector -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Case Card Component Generator Injected by JS -->
-                    <div onclick="selectCase('starter')" class="case-card cursor-pointer glass-card rounded-2xl p-4 border border-gray-700/50 hover:border-amber-500/50 transition-all flex flex-col items-center group">
-                        <div class="w-24 h-24 my-2 relative group-hover:scale-105 transition-transform">
-                            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
-                                <rect x="15" y="30" width="70" height="50" rx="8" fill="url(#c1-body)" stroke="#4A5568" stroke-width="2"/>
-                                <path d="M10 30L50 10L90 30H10Z" fill="url(#c1-top)" stroke="#718096" stroke-width="2"/>
-                                <rect x="42" y="45" width="16" height="20" rx="3" fill="#A0AEC0"/>
-                                <circle cx="50" cy="55" r="3" fill="#1A202C"/>
-                                <defs>
-                                    <linearGradient id="c1-body" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#2D3748"/><stop offset="1" stop-color="#1A202C"/></linearGradient>
-                                    <linearGradient id="c1-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#4A5568"/><stop offset="1" stop-color="#2D3748"/></linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-gray-200">Novice Case</h3>
-                        <p class="text-xs text-gray-400 mt-1">Starter Loot</p>
-                        <span class="mt-3 px-3 py-1 bg-amber-500/10 text-amber-400 rounded-full font-bold text-xs border border-amber-500/20">50 Coins</span>
-                    </div>
-
-                    <div onclick="selectCase('cyber')" class="case-card cursor-pointer glass-card rounded-2xl p-4 border border-gray-700/50 hover:border-cyan-500/50 transition-all flex flex-col items-center group">
-                        <div class="w-24 h-24 my-2 relative group-hover:scale-105 transition-transform glow-cyan">
-                            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
-                                <rect x="15" y="30" width="70" height="50" rx="8" fill="url(#c2-body)" stroke="#00F3FF" stroke-width="2"/>
-                                <path d="M10 30L50 10L90 30H10Z" fill="url(#c2-top)" stroke="#00F3FF" stroke-width="2"/>
-                                <polygon points="50,40 60,55 40,55" fill="#00F3FF"/>
-                                <defs>
-                                    <linearGradient id="c2-body" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#0F2B48"/><stop offset="1" stop-color="#051329"/></linearGradient>
-                                    <linearGradient id="c2-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#005580"/><stop offset="1" stop-color="#0B2238"/></linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-cyan-400">Cybertech Case</h3>
-                        <p class="text-xs text-gray-400 mt-1">High Tech Weapons</p>
-                        <span class="mt-3 px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full font-bold text-xs border border-cyan-500/20">250 Coins</span>
-                    </div>
-
-                    <div onclick="selectCase('royale')" class="case-card cursor-pointer glass-card rounded-2xl p-4 border border-gray-700/50 hover:border-purple-500/50 transition-all flex flex-col items-center group">
-                        <div class="w-24 h-24 my-2 relative group-hover:scale-105 transition-transform glow-purple">
-                            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
-                                <rect x="15" y="30" width="70" height="50" rx="8" fill="url(#c3-body)" stroke="#B026FF" stroke-width="2"/>
-                                <path d="M10 30L50 10L90 30H10Z" fill="url(#c3-top)" stroke="#B026FF" stroke-width="2"/>
-                                <circle cx="50" cy="55" r="10" fill="#B026FF" fill-opacity="0.5" stroke="#FFF" stroke-width="2"/>
-                                <defs>
-                                    <linearGradient id="c3-body" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#2D0B48"/><stop offset="1" stop-color="#140524"/></linearGradient>
-                                    <linearGradient id="c3-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#5B138C"/><stop offset="1" stop-color="#26083B"/></linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-purple-400">Royale Relics</h3>
-                        <p class="text-xs text-gray-400 mt-1">Rare Collectibles</p>
-                        <span class="mt-3 px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full font-bold text-xs border border-purple-500/20">1,000 Coins</span>
-                    </div>
-
-                    <div onclick="selectCase('mythic')" class="case-card cursor-pointer glass-card rounded-2xl p-4 border border-gray-700/50 hover:border-yellow-400/50 transition-all flex flex-col items-center group">
-                        <div class="w-24 h-24 my-2 relative group-hover:scale-105 transition-transform glow-gold">
-                            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
-                                <rect x="15" y="30" width="70" height="50" rx="8" fill="url(#c4-body)" stroke="#FFD700" stroke-width="2"/>
-                                <path d="M10 30L50 10L90 30H10Z" fill="url(#c4-top)" stroke="#FFD700" stroke-width="2"/>
-                                <polygon points="50,40 55,50 65,50 57,56 60,66 50,60 40,66 43,56 35,50 45,50" fill="#FFD700"/>
-                                <defs>
-                                    <linearGradient id="c4-body" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#483B0B"/><stop offset="1" stop-color="#1F1903"/></linearGradient>
-                                    <linearGradient id="c4-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#8C7213"/><stop offset="1" stop-color="#3B3008"/></linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-yellow-400">Mythic Vault</h3>
-                        <p class="text-xs text-gray-400 mt-1">Exotic items</p>
-                        <span class="mt-3 px-3 py-1 bg-yellow-500/10 text-yellow-400 rounded-full font-bold text-xs border border-yellow-500/20">5,000 Coins</span>
-                    </div>
-                </div>
-
-                <!-- Case Opener Reel Section -->
-                <div class="glass-panel rounded-3xl p-6 flex flex-col items-center relative overflow-hidden border border-gray-800">
-                    <div class="text-center mb-4">
-                        <h2 id="selected-case-title" class="text-xl font-black text-gray-100">Select a case above to open</h2>
-                        <p class="text-xs text-gray-400">Test your luck and win high tier items!</p>
-                    </div>
-
-                    <!-- Reel Container -->
-                    <div class="w-full max-w-2xl h-36 bg-dark-900 rounded-2xl relative overflow-hidden border border-gray-800 my-2 shadow-inner">
-                        <div class="case-marker"></div>
-                        <div id="case-reel" class="absolute top-0 left-0 h-full flex items-center space-x-3 px-4 transition-transform duration-0 ease-out">
-                            <!-- Dynamically Generated Items inserted here -->
-                            <div class="flex items-center justify-center w-full h-full text-gray-600 font-medium">Reel Ready</div>
-                        </div>
-                    </div>
-
-                    <!-- Action Control -->
-                    <div class="mt-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full max-w-md">
-                        <button id="btn-open-case" onclick="openCase()" disabled class="flex-1 py-3.5 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 disabled:opacity-50 text-dark-900 font-black rounded-xl shadow-lg shadow-amber-500/20 transition-all uppercase tracking-wider text-sm">
-                            Open Case
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 2. CRASH GAME SECTION -->
-            <section id="game-crash" class="game-section hidden flex flex-col md:flex-row gap-6">
-                <!-- Controls Side -->
-                <div class="glass-panel rounded-2xl p-5 w-full md:w-80 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h3 class="font-bold text-lg text-gray-200 mb-4 flex items-center space-x-2">
-                            <span class="w-2 h-2 rounded-full bg-neon-cyan animate-ping"></span>
-                            <span>Crash Bet</span>
-                        </h3>
-
-                        <!-- Bet Input -->
-                        <div class="space-y-3">
-                            <label class="text-xs text-gray-400 font-semibold">Bet Amount (Coins)</label>
-                            <div class="relative">
-                                <input type="number" id="crash-bet-amount" value="100" min="10" class="w-full bg-dark-900 border border-gray-700 rounded-xl px-4 py-3 text-white font-bold focus:outline-none focus:border-neon-cyan">
-                                <div class="absolute right-2 top-2 flex space-x-1">
-                                    <button onclick="adjustBet('crash-bet-amount', 0.5)" class="px-2 py-1 bg-dark-700 rounded text-xs font-bold text-gray-300">1/2</button>
-                                    <button onclick="adjustBet('crash-bet-amount', 2)" class="px-2 py-1 bg-dark-700 rounded text-xs font-bold text-gray-300">2X</button>
-                                </div>
-                            </div>
-
-                            <label class="text-xs text-gray-400 font-semibold">Auto Cashout Multiplier</label>
-                            <input type="number" id="crash-auto-cashout" value="2.00" step="0.1" min="1.01" class="w-full bg-dark-900 border border-gray-700 rounded-xl px-4 py-3 text-white font-bold focus:outline-none focus:border-neon-cyan">
-                        </div>
-                    </div>
-
-                    <button id="btn-crash-action" onclick="handleCrashAction()" class="w-full py-4 bg-gradient-to-r from-neon-cyan to-blue-600 text-dark-900 font-black rounded-xl shadow-lg shadow-cyan-500/20 uppercase tracking-wider text-sm transition-all">
-                        Place Bet
-                    </button>
-                </div>
-
-                <!-- Live Chart Window -->
-                <div class="glass-panel rounded-2xl p-4 flex-grow flex flex-col h-80 sm:h-96 relative overflow-hidden border border-gray-800">
-                    <div class="absolute top-4 left-6 z-10 flex flex-col">
-                        <span id="crash-multiplier-text" class="text-5xl sm:text-6xl font-black text-white tracking-tight">1.00x</span>
-                        <span id="crash-status-text" class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">Next round starting soon...</span>
-                    </div>
-
-                    <!-- Canvas Graphic -->
-                    <canvas id="crashCanvas" class="w-full h-full block z-0"></canvas>
-                </div>
-            </section>
-
-            <!-- 3. ROULETTE / WHEEL SECTION -->
-            <section id="game-roulette" class="game-section hidden flex flex-col lg:flex-row gap-6 items-center">
-                <!-- SVG Wheel Visualizer -->
-                <div class="glass-panel rounded-3xl p-6 flex flex-col items-center justify-center relative w-full max-w-md">
-                    <!-- Pointer Indicator -->
-                    <div class="absolute top-4 z-20 text-yellow-400 drop-shadow">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 21L4 7h16l-8 14z"/>
-                        </svg>
-                    </div>
-
-                    <!-- Wheel -->
-                    <div class="w-64 h-64 sm:w-80 sm:h-80 relative my-4">
-                        <svg id="roulette-wheel-svg" class="w-full h-full transform transition-transform duration-0 ease-out rounded-full shadow-2xl" viewBox="0 0 200 200">
-                            <!-- Rendered by JS -->
-                        </svg>
-                    </div>
-
-                    <!-- Status Display -->
-                    <div id="roulette-result" class="text-center h-8 font-black text-lg text-yellow-400">
-                        Place your bets!
-                    </div>
-                </div>
-
-                <!-- Betting Board -->
-                <div class="glass-panel rounded-3xl p-6 flex-grow w-full space-y-6">
+        <!-- 1. CRASH GAME SECTION -->
+        <section id="game-crash" class="game-section flex flex-col lg:flex-row gap-6">
+            <!-- Left Betting Panel & Live Players Feed -->
+            <div class="w-full lg:w-96 flex flex-col space-y-4">
+                <!-- Bet Box -->
+                <div class="glass-panel p-5 rounded-3xl border border-gray-800 space-y-4">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-gray-200">Select Multiplier & Bet</h3>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs text-gray-400">Bet:</span>
-                            <input type="number" id="roulette-bet-amount" value="50" min="10" class="w-28 bg-dark-900 border border-gray-700 rounded-lg px-3 py-1.5 text-white font-bold text-sm">
+                        <span class="text-xs font-black uppercase text-gray-400 tracking-wider">Bet Amount</span>
+                        <span class="text-xs text-brand-accent font-bold">Auto Cashout: <input type="number" id="crash-auto-cashout" value="2.00" step="0.1" class="w-14 bg-gray-900 border border-gray-700 rounded text-center text-white px-1 py-0.5">x</span>
+                    </div>
+
+                    <!-- Input & Quick Multipliers -->
+                    <div class="space-y-2">
+                        <div class="relative flex items-center">
+                            <span class="absolute left-4 text-gray-400 font-bold">$</span>
+                            <input type="number" id="crash-bet-input" value="100" min="10" class="w-full bg-brand-dark/90 border border-gray-700 focus:border-brand-accent rounded-2xl pl-8 pr-4 py-3.5 font-black text-white text-lg outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="setBet('crash-bet-input', 100)" class="py-1.5 glass-card rounded-xl font-bold text-xs hover:border-brand-accent text-gray-300">100</button>
+                            <button onclick="setBet('crash-bet-input', 500)" class="py-1.5 glass-card rounded-xl font-bold text-xs hover:border-brand-accent text-gray-300">500</button>
+                            <button onclick="multiplyBet('crash-bet-input', 2)" class="py-1.5 glass-card rounded-xl font-bold text-xs hover:border-brand-accent text-gray-300">2X</button>
+                            <button onclick="setBetMax('crash-bet-input')" class="py-1.5 glass-card rounded-xl font-bold text-xs hover:border-brand-accent text-brand-accent">MAX</button>
                         </div>
                     </div>
 
-                    <!-- Betting Options Grid -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <button onclick="placeRouletteBet('red')" id="chip-red" class="p-4 rounded-2xl bg-red-900/40 border-2 border-red-500/50 hover:border-red-500 flex flex-col items-center justify-center space-y-1 transition-all">
-                            <span class="text-xs text-red-400 font-bold uppercase">Red</span>
-                            <span class="text-2xl font-black text-white">2X</span>
-                        </button>
-                        <button onclick="placeRouletteBet('black')" id="chip-black" class="p-4 rounded-2xl bg-gray-800/60 border-2 border-gray-600 hover:border-gray-400 flex flex-col items-center justify-center space-y-1 transition-all">
-                            <span class="text-xs text-gray-400 font-bold uppercase">Black</span>
-                            <span class="text-2xl font-black text-white">2X</span>
-                        </button>
-                        <button onclick="placeRouletteBet('gold')" id="chip-gold" class="p-4 rounded-2xl bg-amber-900/40 border-2 border-amber-500/50 hover:border-amber-400 flex flex-col items-center justify-center space-y-1 transition-all">
-                            <span class="text-xs text-amber-400 font-bold uppercase">Gold</span>
-                            <span class="text-2xl font-black text-white">14X</span>
-                        </button>
-                        <button onclick="placeRouletteBet('diamond')" id="chip-diamond" class="p-4 rounded-2xl bg-cyan-900/40 border-2 border-cyan-400/50 hover:border-cyan-400 flex flex-col items-center justify-center space-y-1 transition-all">
-                            <span class="text-xs text-cyan-300 font-bold uppercase">Diamond</span>
-                            <span class="text-2xl font-black text-white">50X</span>
-                        </button>
-                    </div>
-
-                    <button onclick="spinRoulette()" id="btn-spin-roulette" class="w-full py-4 bg-gradient-to-r from-yellow-500 to-amber-600 text-dark-900 font-black rounded-xl shadow-lg shadow-amber-500/20 uppercase tracking-wider text-sm transition-all">
-                        Spin Wheel
+                    <!-- Action Button -->
+                    <button id="btn-crash-action" onclick="handleCrashBtn()" class="w-full py-4 bg-gradient-to-r from-brand-accent via-cyan-400 to-blue-600 text-dark-900 font-black rounded-2xl text-base tracking-wider uppercase shadow-neon-cyan transition-all transform active:scale-95">
+                        <span class="text-black">PLACE BET ($100)</span>
                     </button>
                 </div>
-            </section>
 
-            <!-- 4. MINES GAME SECTION -->
-            <section id="game-mines" class="game-section hidden flex flex-col md:flex-row gap-6">
-                <!-- Controls -->
-                <div class="glass-panel rounded-2xl p-5 w-full md:w-80 flex flex-col justify-between space-y-4">
-                    <div class="space-y-4">
-                        <h3 class="font-bold text-lg text-gray-200">Mines setup</h3>
-                        <div>
-                            <label class="text-xs text-gray-400 font-semibold">Bet Amount</label>
-                            <input type="number" id="mines-bet-amount" value="50" min="10" class="w-full bg-dark-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white font-bold mt-1">
+                <!-- Fake Live Multiplayer Feed Sidebar -->
+                <div class="glass-panel p-4 rounded-3xl border border-gray-800 flex-grow flex flex-col h-64 lg:h-auto">
+                    <div class="flex items-center justify-between pb-3 border-b border-gray-800/80 mb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="text-xs font-bold text-gray-300 uppercase tracking-wider">Live Bets Feed</span>
                         </div>
-
-                        <div>
-                            <div class="flex justify-between text-xs font-semibold mb-1">
-                                <span class="text-gray-400">Mines Count</span>
-                                <span id="mines-count-label" class="text-neon-cyan font-bold">3</span>
-                            </div>
-                            <input type="range" id="mines-count-slider" min="1" max="24" value="3" oninput="updateMinesSlider(this.value)" class="w-full accent-cyan-400">
-                        </div>
-
-                        <div class="bg-dark-900/80 rounded-xl p-3 border border-gray-800 space-y-1">
-                            <div class="flex justify-between text-xs text-gray-400">
-                                <span>Next Tile Multiplier:</span>
-                                <span id="mines-next-mult" class="text-white font-bold">1.12x</span>
-                            </div>
-                            <div class="flex justify-between text-xs text-gray-400">
-                                <span>Current Cashout:</span>
-                                <span id="mines-cashout-val" class="text-green-400 font-bold">0 Coins</span>
-                            </div>
-                        </div>
+                        <span id="fake-players-count" class="text-xs font-black text-brand-accent">1,482 Players</span>
                     </div>
 
-                    <div class="space-y-2">
-                        <button id="btn-mines-start" onclick="startMinesGame()" class="w-full py-3.5 bg-gradient-to-r from-neon-green to-emerald-600 text-dark-900 font-black rounded-xl shadow-lg shadow-green-500/20 uppercase tracking-wider text-sm">
-                            Start Game
-                        </button>
-                        <button id="btn-mines-cashout" onclick="cashoutMines()" disabled class="w-full py-3.5 bg-yellow-500 disabled:opacity-40 text-dark-900 font-black rounded-xl uppercase tracking-wider text-sm">
-                            Cashout
-                        </button>
+                    <div id="crash-players-feed" class="flex-grow overflow-y-auto space-y-2 pr-1 no-scrollbar text-xs">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Canvas & Graph Display -->
+            <div class="flex-grow flex flex-col space-y-4">
+                <!-- Recent Multipliers Bar -->
+                <div id="crash-history-bar" class="flex items-center space-x-2 overflow-x-auto p-2 glass-panel rounded-2xl border border-gray-800 no-scrollbar">
+                    <!-- Historical Multiplier Pills Injected JS -->
+                </div>
+
+                <!-- Main Interactive Flight Canvas -->
+                <div class="glass-panel rounded-3xl p-4 flex-grow relative overflow-hidden border border-gray-800 flex flex-col min-h-[380px] sm:min-h-[480px]">
+                    <!-- Live Multiplier HUD Overlay -->
+                    <div class="absolute top-8 left-8 z-20 flex flex-col">
+                        <span id="crash-mult-hud" class="text-6xl sm:text-7xl font-black text-white tracking-tight drop-shadow-lg">1.00x</span>
+                        <span id="crash-status-sub" class="text-xs font-extrabold text-brand-accent uppercase tracking-widest mt-1">NEXT ROUND INCOMING...</span>
+                    </div>
+
+                    <canvas id="crashGraphCanvas" class="w-full h-full block z-10"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. CASE OPENING SECTION -->
+        <section id="game-cases" class="game-section hidden flex flex-col space-y-6">
+            <!-- Categories Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <!-- Case Selector Card 1 -->
+                <div onclick="selectCase('budget')" class="case-card glass-card rounded-2xl p-4 cursor-pointer border border-gray-800 hover:border-cyan-500 transition-all flex flex-col items-center group">
+                    <div class="w-28 h-28 my-2 group-hover:scale-105 transition-transform flex items-center justify-center">
+                        <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                            <rect x="15" y="30" width="70" height="50" rx="10" fill="url(#case1-grad)" stroke="#00f0ff" stroke-width="2"/>
+                            <path d="M10 30L50 10L90 30H10Z" fill="url(#case1-top)" stroke="#00f0ff" stroke-width="2"/>
+                            <circle cx="50" cy="55" r="8" fill="#00f0ff" fill-opacity="0.6"/>
+                            <defs>
+                                <linearGradient id="case1-grad" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#0e1f38"/><stop offset="1" stop-color="#070d18"/></linearGradient>
+                                <linearGradient id="case1-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#00f0ff"/><stop offset="1" stop-color="#005580"/></linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="font-extrabold text-sm text-gray-100">Starter Box</span>
+                    <span class="text-xs font-black text-brand-accent mt-1">$50</span>
+                </div>
+
+                <!-- Case Selector Card 2 -->
+                <div onclick="selectCase('cyber')" class="case-card glass-card rounded-2xl p-4 cursor-pointer border border-gray-800 hover:border-purple-500 transition-all flex flex-col items-center group">
+                    <div class="w-28 h-28 my-2 group-hover:scale-105 transition-transform flex items-center justify-center">
+                        <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                            <rect x="15" y="30" width="70" height="50" rx="10" fill="url(#case2-grad)" stroke="#8a2be2" stroke-width="2"/>
+                            <path d="M10 30L50 10L90 30H10Z" fill="url(#case2-top)" stroke="#8a2be2" stroke-width="2"/>
+                            <polygon points="50,45 60,60 40,60" fill="#8a2be2"/>
+                            <defs>
+                                <linearGradient id="case2-grad" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#2a0e38"/><stop offset="1" stop-color="#12051a"/></linearGradient>
+                                <linearGradient id="case2-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#8a2be2"/><stop offset="1" stop-color="#4a0080"/></linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="font-extrabold text-sm text-purple-300">Neon Cyber</span>
+                    <span class="text-xs font-black text-purple-400 mt-1">$250</span>
+                </div>
+
+                <!-- Case Selector Card 3 -->
+                <div onclick="selectCase('royale')" class="case-card glass-card rounded-2xl p-4 cursor-pointer border border-gray-800 hover:border-yellow-500 transition-all flex flex-col items-center group">
+                    <div class="w-28 h-28 my-2 group-hover:scale-105 transition-transform flex items-center justify-center">
+                        <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                            <rect x="15" y="30" width="70" height="50" rx="10" fill="url(#case3-grad)" stroke="#ffd700" stroke-width="2"/>
+                            <path d="M10 30L50 10L90 30H10Z" fill="url(#case3-top)" stroke="#ffd700" stroke-width="2"/>
+                            <circle cx="50" cy="55" r="10" fill="#ffd700" fill-opacity="0.8"/>
+                            <defs>
+                                <linearGradient id="case3-grad" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#382e0e"/><stop offset="1" stop-color="#1a1405"/></linearGradient>
+                                <linearGradient id="case3-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#ffd700"/><stop offset="1" stop-color="#b8860b"/></linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="font-extrabold text-sm text-yellow-400">Golden Royale</span>
+                    <span class="text-xs font-black text-yellow-400 mt-1">$1,000</span>
+                </div>
+
+                <!-- Case Selector Card 4 -->
+                <div onclick="selectCase('mystery')" class="case-card glass-card rounded-2xl p-4 cursor-pointer border border-gray-800 hover:border-pink-500 transition-all flex flex-col items-center group">
+                    <div class="w-28 h-28 my-2 group-hover:scale-105 transition-transform flex items-center justify-center">
+                        <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                            <rect x="15" y="30" width="70" height="50" rx="10" fill="url(#case4-grad)" stroke="#ff0055" stroke-width="2"/>
+                            <path d="M10 30L50 10L90 30H10Z" fill="url(#case4-top)" stroke="#ff0055" stroke-width="2"/>
+                            <text x="50" y="62" font-size="20" font-weight="900" fill="#ff0055" text-anchor="middle">?</text>
+                            <defs>
+                                <linearGradient id="case4-grad" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#380e1e"/><stop offset="1" stop-color="#18050c"/></linearGradient>
+                                <linearGradient id="case4-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#ff0055"/><stop offset="1" stop-color="#990033"/></linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="font-extrabold text-sm text-pink-400">Mystery Arcana</span>
+                    <span class="text-xs font-black text-pink-400 mt-1">$2,500</span>
+                </div>
+
+                <!-- Case Selector Card 5 -->
+                <div onclick="selectCase('immortal')" class="case-card glass-card rounded-2xl p-4 cursor-pointer border border-gray-800 hover:border-emerald-400 transition-all flex flex-col items-center group">
+                    <div class="w-28 h-28 my-2 group-hover:scale-105 transition-transform flex items-center justify-center">
+                        <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                            <rect x="15" y="30" width="70" height="50" rx="10" fill="url(#case5-grad)" stroke="#00ff88" stroke-width="2"/>
+                            <path d="M10 30L50 10L90 30H10Z" fill="url(#case5-top)" stroke="#00ff88" stroke-width="2"/>
+                            <polygon points="50,40 58,58 42,58" fill="#00ff88"/>
+                            <defs>
+                                <linearGradient id="case5-grad" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#0e3820"/><stop offset="1" stop-color="#05180e"/></linearGradient>
+                                <linearGradient id="case5-top" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#00ff88"/><stop offset="1" stop-color="#009951"/></linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="font-extrabold text-sm text-emerald-400">Immortal Vault</span>
+                    <span class="text-xs font-black text-emerald-400 mt-1">$5,000</span>
+                </div>
+            </div>
+
+            <!-- Case Opening Stage Container -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-gray-800 flex flex-col items-center relative overflow-hidden">
+                <div class="text-center mb-6">
+                    <h2 id="active-case-name" class="text-2xl font-black text-white tracking-wide">Select a Case Above</h2>
+                    <p class="text-xs text-gray-400 font-semibold mt-1">Spin the roulette to win high tier skins & relics!</p>
+                </div>
+
+                <!-- 60FPS Horizontal Roulette Spinner -->
+                <div class="w-full max-w-4xl h-44 bg-brand-dark/95 rounded-2xl relative overflow-hidden border-2 border-gray-800 my-2 shadow-inner">
+                    <div class="case-marker"></div>
+                    <div id="case-reel-strip" class="absolute top-0 left-0 h-full flex items-center space-x-3 px-4 transition-transform duration-0">
+                        <div class="w-full text-center text-gray-600 font-bold">Select a case to prepare reel...</div>
                     </div>
                 </div>
 
-                <!-- 5x5 Grid Board -->
-                <div class="glass-panel rounded-2xl p-6 flex-grow flex items-center justify-center">
-                    <div id="mines-grid" class="grid grid-cols-5 gap-2.5 w-full max-w-md aspect-square">
-                        <!-- 25 Interactive Tiles dynamically rendered -->
+                <!-- Open Controls -->
+                <div class="mt-6 flex flex-wrap justify-center gap-3 w-full max-w-md">
+                    <button id="btn-open-1x" onclick="spinCase(1)" disabled class="flex-1 py-4 bg-gradient-to-r from-brand-accent to-blue-600 text-dark-900 font-black rounded-2xl text-sm uppercase tracking-wider shadow-neon-cyan transition-all transform active:scale-95 disabled:opacity-40">
+                        Open 1x
+                    </button>
+                    <button id="btn-open-fast" onclick="spinCase(1, true)" disabled class="px-5 py-4 glass-card border border-amber-500/40 text-amber-400 font-extrabold rounded-2xl text-xs uppercase tracking-wider transition-all transform active:scale-95 disabled:opacity-40">
+                        ⚡ Fast Open
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MINES GAME SECTION -->
+        <section id="game-mines" class="game-section hidden flex flex-col md:flex-row gap-6">
+            <!-- Sidebar Setup -->
+            <div class="w-full md:w-80 glass-panel p-5 rounded-3xl border border-gray-800 flex flex-col justify-between space-y-4">
+                <div class="space-y-4">
+                    <h3 class="font-extrabold text-lg text-white">Mines Setup</h3>
+
+                    <div>
+                        <label class="text-xs font-bold text-gray-400">Bet Amount ($)</label>
+                        <input type="number" id="mines-bet-input" value="100" min="10" class="w-full bg-brand-dark border border-gray-700 rounded-xl px-4 py-3 font-black text-white mt-1 outline-none focus:border-brand-accent">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-gray-400">Number of Mines</span>
+                            <span id="mines-count-display" class="text-brand-accent font-black">3</span>
+                        </div>
+                        <input type="range" id="mines-slider" min="1" max="24" value="3" oninput="onMinesSliderChange(this.value)" class="w-full accent-cyan-400">
+                    </div>
+
+                    <div class="bg-brand-dark/80 rounded-2xl p-4 border border-gray-800/80 space-y-2">
+                        <div class="flex justify-between text-xs font-semibold text-gray-400">
+                            <span>Next Tile Multiplier:</span>
+                            <span id="mines-next-mult" class="text-white font-black">1.12x</span>
+                        </div>
+                        <div class="flex justify-between text-xs font-semibold text-gray-400">
+                            <span>Current Cashout:</span>
+                            <span id="mines-cashout-val" class="text-emerald-400 font-black">$0.00</span>
+                        </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- 5. TAPPER / CLICKER EARN SECTION -->
-            <section id="game-clicker" class="game-section hidden flex flex-col items-center justify-center space-y-6 py-6">
-                <div class="text-center space-y-2">
-                    <h2 class="text-2xl font-black text-white">Free Coin Vault Tap</h2>
-                    <p class="text-xs text-gray-400">Tap the Golden Vault to generate extra casino balance!</p>
+                <div class="space-y-2">
+                    <button id="btn-mines-start" onclick="startMinesGame()" class="w-full py-4 bg-gradient-to-r from-emerald-400 to-green-600 text-dark-900 font-black rounded-2xl text-sm uppercase tracking-wider shadow-lg shadow-emerald-500/20">
+                        START GAME
+                    </button>
+                    <button id="btn-mines-cashout" onclick="cashoutMines()" disabled class="w-full py-4 bg-gradient-to-r from-amber-400 to-yellow-600 text-dark-900 font-black rounded-2xl text-sm uppercase tracking-wider disabled:opacity-30">
+                        CASHOUT
+                    </button>
                 </div>
+            </div>
 
-                <!-- Tap Vault SVG Component -->
-                <div onclick="handleVaultTap(event)" class="w-56 h-56 cursor-pointer relative transition-transform active:scale-95 group">
-                    <div class="absolute inset-0 bg-yellow-500/10 rounded-full blur-2xl group-hover:bg-yellow-500/20 transition-all"></div>
-                    <svg class="w-full h-full glow-gold" viewBox="0 0 200 200" fill="none">
-                        <circle cx="100" cy="100" r="80" fill="url(#vault-bg)" stroke="#FFD700" stroke-width="4"/>
-                        <circle cx="100" cy="100" r="60" fill="none" stroke="#DAA520" stroke-width="3" stroke-dasharray="6 6"/>
-                        <!-- Vault Wheel -->
-                        <circle cx="100" cy="100" r="25" fill="#B8860B" stroke="#FFF" stroke-width="2"/>
-                        <path d="M100 40V160M40 100H160M57 57L143 143M57 143L143 57" stroke="#FFD700" stroke-width="4" stroke-linecap="round"/>
-                        <defs>
-                            <linearGradient id="vault-bg" x1="0" y1="0" x2="200" y2="200">
-                                <stop stop-color="#3B2D06"/>
-                                <stop offset="1" stop-color="#1A1302"/>
-                            </linearGradient>
-                        </defs>
+            <!-- 5x5 Grid Board -->
+            <div class="flex-grow glass-panel p-6 rounded-3xl border border-gray-800 flex items-center justify-center min-h-[380px]">
+                <div id="mines-grid-board" class="grid grid-cols-5 gap-3 w-full max-w-md aspect-square">
+                    <!-- 25 Interactive Tiles injected JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. WHEEL OF FORTUNE SECTION -->
+        <section id="game-wheel" class="game-section hidden flex flex-col lg:flex-row gap-6 items-center">
+            <!-- SVG Wheel Display -->
+            <div class="glass-panel p-8 rounded-3xl border border-gray-800 flex flex-col items-center relative w-full max-w-md">
+                <div class="absolute top-5 z-20 text-brand-accent drop-shadow-lg">
+                    <svg class="w-10 h-10" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21L3 6h18l-9 15z"/>
                     </svg>
                 </div>
 
-                <!-- Daily Wheel Bonus Button -->
-                <div class="pt-4">
-                    <button onclick="claimDailyBonus()" id="btn-daily-bonus" class="px-6 py-3 bg-gradient-to-r from-neon-purple to-pink-600 text-white font-bold rounded-xl shadow-lg shadow-purple-500/20 text-sm flex items-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 13C10.832 21 2 13.5 2 8a10 10 0 0120 0c0 5.5-8.832 13-10 13z"/></svg>
-                        <span>Claim Free Daily 500 Coins</span>
-                    </button>
+                <div class="w-72 h-72 sm:w-80 sm:h-80 relative my-4">
+                    <svg id="wheel-svg" class="w-full h-full transform transition-transform duration-0 ease-out rounded-full shadow-2xl" viewBox="0 0 200 200">
+                        <!-- Injected JS Segments -->
+                    </svg>
                 </div>
-            </section>
 
-            <!-- 6. INVENTORY / VAULT SECTION -->
-            <section id="game-inventory" class="game-section hidden flex flex-col space-y-4">
-                <div class="flex justify-between items-center glass-panel p-4 rounded-xl">
-                    <div>
-                        <h3 class="font-bold text-gray-200">Vault Inventory</h3>
-                        <p class="text-xs text-gray-400">Total Stored Value: <span id="inventory-total-value" class="text-yellow-400 font-bold">0 Coins</span></p>
+                <div id="wheel-result-hud" class="text-center font-black text-xl text-brand-accent h-8 mt-2">
+                    SPIN TO WIN UP TO 100X
+                </div>
+            </div>
+
+            <!-- Controls & Betting -->
+            <div class="glass-panel p-6 rounded-3xl border border-gray-800 flex-grow w-full space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-extrabold text-white text-lg">Wheel Bet Controls</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-gray-400 font-bold">Bet:</span>
+                        <input type="number" id="wheel-bet-input" value="100" min="10" class="w-28 bg-brand-dark border border-gray-700 rounded-xl px-3 py-2 text-white font-bold text-sm">
                     </div>
-                    <button onclick="sellAllItems()" class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold transition-all">
-                        Sell All
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="spinWheelWithBet(1.5)" class="p-4 glass-card rounded-2xl border border-cyan-500/30 flex flex-col items-center">
+                        <span class="text-xs text-gray-400 font-bold">SAFE</span>
+                        <span class="text-xl font-black text-cyan-400">1.5X</span>
+                    </button>
+                    <button onclick="spinWheelWithBet(3.0)" class="p-4 glass-card rounded-2xl border border-purple-500/30 flex flex-col items-center">
+                        <span class="text-xs text-gray-400 font-bold">MEDIUM</span>
+                        <span class="text-xl font-black text-purple-400">3.0X</span>
+                    </button>
+                    <button onclick="spinWheelWithBet(10.0)" class="p-4 glass-card rounded-2xl border border-amber-500/30 flex flex-col items-center">
+                        <span class="text-xs text-gray-400 font-bold">RISKY</span>
+                        <span class="text-xl font-black text-amber-400">10.0X</span>
+                    </button>
+                    <button onclick="spinWheelWithBet(50.0)" class="p-4 glass-card rounded-2xl border border-pink-500/30 flex flex-col items-center">
+                        <span class="text-xs text-gray-400 font-bold">JACKPOT</span>
+                        <span class="text-xl font-black text-pink-500">50.0X</span>
                     </button>
                 </div>
 
-                <!-- Grid list of items -->
-                <div id="inventory-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                    <!-- Dynamic Items rendered here -->
+                <button id="btn-spin-wheel" onclick="spinWheelWithBet(2.0)" class="w-full py-4 bg-gradient-to-r from-brand-accent to-purple-600 text-dark-900 font-black rounded-2xl text-sm uppercase tracking-wider shadow-neon-cyan">
+                    SPIN WHEEL NOW
+                </button>
+            </div>
+        </section>
+
+        <!-- 5. CLICKER & REWARDS SECTION -->
+        <section id="game-clicker" class="game-section hidden flex flex-col items-center justify-center space-y-6 py-6">
+            <div class="text-center space-y-1">
+                <h2 class="text-3xl font-black text-white">Tap To Mine Cash</h2>
+                <p class="text-xs text-gray-400">Broke? Tap the vault core to generate extra balance instantly!</p>
+            </div>
+
+            <!-- Tap Core Vault SVG -->
+            <div onclick="handleVaultCoreTap(event)" class="w-64 h-64 cursor-pointer relative transition-transform active:scale-90 group my-4">
+                <div class="absolute inset-0 bg-brand-accent/20 rounded-full blur-3xl group-hover:bg-brand-accent/40 transition-all"></div>
+                <svg class="w-full h-full drop-shadow-2xl" viewBox="0 0 200 200" fill="none">
+                    <circle cx="100" cy="100" r="85" fill="url(#v-grad)" stroke="#00f0ff" stroke-width="4"/>
+                    <circle cx="100" cy="100" r="65" fill="none" stroke="#8a2be2" stroke-width="3" stroke-dasharray="8 6"/>
+                    <path d="M100 35V165M35 100H165" stroke="#00f0ff" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="100" cy="100" r="30" fill="#ffd700" stroke="#fff" stroke-width="3"/>
+                    <defs>
+                        <linearGradient id="v-grad" x1="0" y1="0" x2="200" y2="200">
+                            <stop stop-color="#121829"/>
+                            <stop offset="1" stop-color="#070a12"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <!-- Daily Claim Button -->
+            <button onclick="claimDailyRewardStreak()" id="btn-daily-claim" class="px-8 py-4 bg-gradient-to-r from-amber-400 to-yellow-600 text-dark-900 font-black rounded-2xl text-sm uppercase tracking-wider shadow-neon-gold flex items-center space-x-2">
+                <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 13C10.832 21 2 13.5 2 8a10 10 0 0120 0c0 5.5-8.832 13-10 13z"/></svg>
+                <span class="text-black">CLAIM DAILY $1,000 BONUS</span>
+            </button>
+        </section>
+
+        <!-- 6. INVENTORY & CONTRACTS SECTION -->
+        <section id="game-inventory" class="game-section hidden flex flex-col space-y-6">
+            <div class="glass-panel p-5 rounded-3xl border border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="font-extrabold text-white text-lg">Vault Inventory</h3>
+                    <p class="text-xs text-gray-400">Total Vault Value: <span id="inventory-total-val" class="text-brand-accent font-black">$0.00</span></p>
                 </div>
-            </section>
-        </main>
+
+                <div class="flex items-center space-x-3">
+                    <button onclick="triggerContractUpgrade()" class="px-4 py-2.5 glass-card border border-purple-500/40 text-purple-300 font-extrabold text-xs rounded-xl hover:border-purple-500">
+                        <span>🧪 Upgrade Contract (5 Items)</span>
+                    </button>
+                    <button onclick="sellAllInventory()" class="px-4 py-2.5 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/40 font-extrabold text-xs rounded-xl">
+                        <span>Sell All Items</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Items Grid -->
+            <div id="inventory-grid-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Dynamically rendered items -->
+            </div>
+        </section>
+
     </div>
 
-    <!-- AUDIO & JAVASCRIPT LOGIC ENGINE -->
+    <!-- MOBILE BOTTOM FLOATING NAVIGATION BAR -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 md:hidden glass-panel border-t border-gray-800 px-3 py-2 flex justify-around items-center">
+        <button onclick="switchTab('crash')" id="mob-tab-crash" class="flex flex-col items-center space-y-1 text-brand-accent">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <span class="text-[10px] font-bold">Crash</span>
+        </button>
+        <button onclick="switchTab('cases')" id="mob-tab-cases" class="flex flex-col items-center space-y-1 text-gray-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            <span class="text-[10px] font-bold">Cases</span>
+        </button>
+        <button onclick="switchTab('mines')" id="mob-tab-mines" class="flex flex-col items-center space-y-1 text-gray-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span class="text-[10px] font-bold">Mines</span>
+        </button>
+        <button onclick="switchTab('wheel')" id="mob-tab-wheel" class="flex flex-col items-center space-y-1 text-gray-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+            <span class="text-[10px] font-bold">Wheel</span>
+        </button>
+        <button onclick="switchTab('inventory')" id="mob-tab-inventory" class="flex flex-col items-center space-y-1 text-gray-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1a2 2 0 01-2 2M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            <span class="text-[10px] font-bold">Vault</span>
+        </button>
+    </div>
+
+    <!-- ITEM WON MODAL POPUP -->
+    <div id="item-win-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-panel p-8 rounded-3xl border border-gray-700 max-w-sm w-full flex flex-col items-center text-center tilt-card shadow-neon-gold">
+            <span class="text-xs font-black text-amber-400 tracking-widest uppercase">CONGRATULATIONS!</span>
+            <h3 id="modal-item-name" class="text-xl font-black text-white mt-1">Dragon Lore AWP</h3>
+            
+            <div class="w-36 h-36 my-6 rounded-2xl flex items-center justify-center relative bg-gradient-to-b from-amber-500/20 to-transparent border border-amber-500/40">
+                <svg id="modal-item-svg" class="w-24 h-24 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2"/>
+                </svg>
+            </div>
+
+            <div class="text-2xl font-black text-brand-accent mb-6" id="modal-item-val">$3,500.00</div>
+
+            <div class="flex space-x-3 w-full">
+                <button onclick="claimWonItemModal()" class="flex-1 py-3 bg-gradient-to-r from-brand-accent to-blue-600 text-dark-900 font-black rounded-xl text-xs uppercase tracking-wider">
+                    Keep In Vault
+                </button>
+                <button onclick="sellWonItemModal()" class="flex-1 py-3 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 font-black rounded-xl text-xs uppercase tracking-wider border border-rose-500/40">
+                    Sell Instantly
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT GAME LOGIC ENGINE -->
     <script>
-        /* --- AUDIO SYNTHESIZER (WEB AUDIO API) --- */
-        class SoundEngine {
+        /* --- WEB AUDIO SYNTHESIZER --- */
+        class AudioSynth {
             constructor() {
-                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                this.ctx = null;
+                this.muted = false;
             }
 
-            playClick() {
-                if(this.ctx.state === 'suspended') this.ctx.resume();
+            init() {
+                if(!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if(this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playTick() {
+                if(this.muted) return;
+                this.init();
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(400, this.ctx.currentTime + 0.05);
-                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
-                osc.stop(this.ctx.currentTime + 0.05);
+                osc.stop(this.ctx.currentTime + 0.03);
             }
 
-            playWin() {
-                if(this.ctx.state === 'suspended') this.ctx.resume();
-                const notes = [400, 520, 660, 880];
+            playWinFanfare() {
+                if(this.muted) return;
+                this.init();
+                const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, idx) => {
                     const osc = this.ctx.createOscillator();
                     const gain = this.ctx.createGain();
-                    osc.type = 'triangle';
+                    osc.type = 'sine';
                     osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
                     gain.gain.setValueAtTime(0.15, this.ctx.currentTime + idx * 0.08);
-                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.08 + 0.2);
+                    gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.25);
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
                     osc.start(this.ctx.currentTime + idx * 0.08);
-                    osc.stop(this.ctx.currentTime + idx * 0.08 + 0.2);
+                    osc.stop(this.ctx.currentTime + idx * 0.08 + 0.25);
                 });
             }
 
-            playExplode() {
-                if(this.ctx.state === 'suspended') this.ctx.resume();
+            playExplosion() {
+                if(this.muted) return;
+                this.init();
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+                osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(20, this.ctx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
-                osc.stop(this.ctx.currentTime + 0.3);
+                osc.stop(this.ctx.currentTime + 0.4);
             }
         }
 
-        const audio = new SoundEngine();
+        const audioSynth = new AudioSynth();
+
+        function toggleAudio() {
+            audioSynth.muted = !audioSynth.muted;
+            document.getElementById('audio-icon-on').classList.toggle('hidden', audioSynth.muted);
+            document.getElementById('audio-icon-off').classList.toggle('hidden', !audioSynth.muted);
+        }
 
         /* --- GLOBAL APP STATE --- */
         const state = {
-            coins: 1000,
-            gems: 50,
-            level: 1,
-            xp: 25,
+            balance: 10000.00,
+            xp: 65,
+            level: 12,
             inventory: [],
-            selectedCase: null,
-            isCaseSpinning: false,
+            wonModalItem: null,
             crash: {
                 running: false,
                 multiplier: 1.00,
                 crashPoint: 0,
                 bet: 0,
                 hasBet: false,
-                animId: null
+                history: [1.45, 2.10, 12.40, 1.15, 4.50, 1.85, 55.20, 1.05]
+            },
+            cases: {
+                selected: null,
+                spinning: false
             },
             mines: {
                 active: false,
@@ -589,176 +751,135 @@
             }
         };
 
-        // Rarity Definitions & SVG Items database
-        const ITEM_DATABASE = {
-            common: [
-                { name: 'Bronze Blade', value: 30, color: '#A0AEC0', border: 'border-gray-500' },
-                { name: 'Tactical Helmet', value: 45, color: '#718096', border: 'border-gray-500' }
-            ],
-            rare: [
-                { name: 'Neon Cyber Pistol', value: 180, color: '#00F3FF', border: 'border-cyan-500' },
-                { name: 'Plasma Shield', value: 220, color: '#3182CE', border: 'border-blue-500' }
-            ],
-            epic: [
-                { name: 'Void Crystal', value: 800, color: '#B026FF', border: 'border-purple-500' },
-                { name: 'Cybernetic Wings', value: 950, color: '#805AD5', border: 'border-purple-500' }
-            ],
-            legendary: [
-                { name: 'Golden Dragon Rifle', value: 3500, color: '#FFD700', border: 'border-yellow-400' },
-                { name: 'Crown of Avarice', value: 4800, color: '#ECC94B', border: 'border-yellow-400' }
-            ],
-            mythic: [
-                { name: 'Quantum Core', value: 12000, color: '#FF2A6D', border: 'border-red-500' }
-            ]
+        const ITEM_RARITIES = {
+            common: { color: '#94a3b8', border: 'border-slate-500' },
+            rare: { color: '#00f0ff', border: 'border-cyan-500' },
+            epic: { color: '#8a2be2', border: 'border-purple-500' },
+            legendary: { color: '#ffd700', border: 'border-yellow-400' },
+            arcana: { color: '#ff0055', border: 'border-rose-500' },
+            immortal: { color: '#00ff88', border: 'border-emerald-400' }
         };
 
-        const CASES_CONFIG = {
-            starter: { name: "Novice Case", cost: 50, pool: ['common', 'rare'] },
-            cyber: { name: "Cybertech Case", cost: 250, pool: ['rare', 'epic'] },
-            royale: { name: "Royale Relics", cost: 1000, pool: ['epic', 'legendary'] },
-            mythic: { name: "Mythic Vault", cost: 5000, pool: ['legendary', 'mythic'] }
+        const CASES_DB = {
+            budget: { name: "Starter Box", cost: 50, pool: ['common', 'rare'] },
+            cyber: { name: "Neon Cyber", cost: 250, pool: ['rare', 'epic'] },
+            royale: { name: "Golden Royale", cost: 1000, pool: ['epic', 'legendary'] },
+            mystery: { name: "Mystery Arcana", cost: 2500, pool: ['legendary', 'arcana'] },
+            immortal: { name: "Immortal Vault", cost: 5000, pool: ['arcana', 'immortal'] }
         };
 
-        /* --- INITIALIZATION & ROUTING --- */
+        const ITEMS_SAMPLE_DB = [
+            { name: "P250 Sand Dune", value: 15, rarity: "common" },
+            { name: "AK-47 Neon Rider", value: 180, rarity: "rare" },
+            { name: "M4A4 Neo-Noir", value: 450, rarity: "epic" },
+            { name: "Butterfly Knife Fade", value: 1800, rarity: "legendary" },
+            { name: "AWP Dragon Lore", value: 4500, rarity: "arcana" },
+            { name: "Karambit Gamma Doppler", value: 8500, rarity: "immortal" }
+        ];
+
+        /* --- INITIALIZATION --- */
         window.addEventListener('DOMContentLoaded', () => {
-            updateUIHeader();
-            initRouletteWheel();
-            initMinesGrid();
+            initBackgroundParticles();
             initCrashCanvas();
+            renderCrashHistory();
+            initFakePlayersFeed();
+            initMinesBoard();
+            initWheelSVG();
+            updateUIHeader();
         });
 
+        function updateUIHeader() {
+            document.getElementById('balance-display').textContent = state.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('user-lvl').textContent = state.level;
+            document.getElementById('user-xp-pct').textContent = state.xp + '%';
+            document.getElementById('user-xp-bar').style.width = state.xp + '%';
+            document.getElementById('inventory-total-val').textContent = '$' + state.inventory.reduce((a, b) => a + b.value, 0).toLocaleString();
+        }
+
         function switchTab(tabName) {
-            audio.playClick();
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-gradient-to-r', 'from-amber-500', 'to-yellow-600', 'text-dark-900', 'shadow-lg');
+            audioSynth.playTick();
+            document.querySelectorAll('.game-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`game-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('bg-gradient-to-r', 'from-brand-accent', 'to-blue-600', 'text-dark-900', 'shadow-neon-cyan');
                 btn.classList.add('text-gray-400');
             });
-            
-            const activeBtn = document.getElementById(`tab-${tabName}`);
+
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
             if(activeBtn) {
                 activeBtn.classList.remove('text-gray-400');
-                activeBtn.classList.add('bg-gradient-to-r', 'from-amber-500', 'to-yellow-600', 'text-dark-900', 'shadow-lg');
+                activeBtn.classList.add('bg-gradient-to-r', 'from-brand-accent', 'to-blue-600', 'text-dark-900', 'shadow-neon-cyan');
             }
-
-            document.querySelectorAll('.game-section').forEach(sec => sec.classList.add('hidden'));
-            const targetSec = document.getElementById(`game-${tabName}`);
-            if(targetSec) targetSec.classList.remove('hidden');
         }
 
-        function updateUIHeader() {
-            document.getElementById('balance-coins').textContent = state.coins.toLocaleString();
-            document.getElementById('balance-gems').textContent = state.gems;
-            document.getElementById('user-level').textContent = state.level;
-            document.getElementById('xp-bar').style.width = `${state.xp}%`;
+        function setBet(inputId, val) {
+            document.getElementById(inputId).value = val;
+        }
+        function multiplyBet(inputId, factor) {
+            const el = document.getElementById(inputId);
+            el.value = Math.floor(parseFloat(el.value || 0) * factor);
+        }
+        function setBetMax(inputId) {
+            document.getElementById(inputId).value = Math.floor(state.balance);
         }
 
-        function addCoins(amt) {
-            state.coins += amt;
+        function openDepositModal() {
+            state.balance += 10000;
+            audioSynth.playWinFanfare();
             updateUIHeader();
         }
 
-        function deductCoins(amt) {
-            if(state.coins >= amt) {
-                state.coins -= amt;
-                updateUIHeader();
-                return true;
+        /* --- PARTICLE CANVAS BACKGROUND --- */
+        function initBackgroundParticles() {
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
             }
-            alert("Not enough coins!");
-            return false;
-        }
+            window.addEventListener('resize', resize);
+            resize();
 
-        function adjustBet(inputId, factor) {
-            const el = document.getElementById(inputId);
-            let val = parseInt(el.value) || 0;
-            el.value = Math.max(10, Math.floor(val * factor));
-        }
-
-        /* --- 1. CASE OPENING LOGIC --- */
-        function selectCase(type) {
-            audio.playClick();
-            state.selectedCase = CASES_CONFIG[type];
-            document.getElementById('selected-case-title').textContent = `${state.selectedCase.name} (${state.selectedCase.cost} Coins)`;
-            document.getElementById('btn-open-case').disabled = false;
-            
-            // Build visual reel preview
-            buildReel();
-        }
-
-        function getRandomItemFromPool(pool) {
-            const rarity = pool[Math.floor(Math.random() * pool.length)];
-            const items = ITEM_DATABASE[rarity];
-            const item = items[Math.floor(Math.random() * items.length)];
-            return { ...item, rarity };
-        }
-
-        function buildReel() {
-            const reel = document.getElementById('case-reel');
-            reel.innerHTML = '';
-            reel.style.transform = 'translateX(0px)';
-            
-            if(!state.selectedCase) return;
-
-            // Generate 40 items for reel
-            for(let i = 0; i < 45; i++) {
-                const item = getRandomItemFromPool(state.selectedCase.pool);
-                const card = document.createElement('div');
-                card.className = `flex-shrink-0 w-28 h-32 glass-card rounded-xl border-b-4 ${item.border} flex flex-col items-center justify-center p-2 relative`;
-                card.innerHTML = `
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2" style="background:${item.color}20">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="${item.color}">
-                            <polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2"/>
-                        </svg>
-                    </div>
-                    <span class="text-xs font-bold text-gray-200 text-center truncate w-full">${item.name}</span>
-                    <span class="text-[10px] text-yellow-400 font-semibold">${item.value} C</span>
-                `;
-                card.dataset.item = JSON.stringify(item);
-                reel.appendChild(card);
+            for(let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 2 + 1,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    alpha: Math.random() * 0.5 + 0.1
+                });
             }
+
+            function loop() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if(p.x < 0) p.x = w; if(p.x > w) p.x = 0;
+                    if(p.y < 0) p.y = h; if(p.y > h) p.y = 0;
+
+                    ctx.fillStyle = `rgba(0, 240, 255, ${p.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(loop);
+            }
+            loop();
         }
 
-        function openCase() {
-            if(!state.selectedCase || state.isCaseSpinning) return;
-            if(!deductCoins(state.selectedCase.cost)) return;
-
-            state.isCaseSpinning = true;
-            document.getElementById('btn-open-case').disabled = true;
-            buildReel();
-
-            const reel = document.getElementById('case-reel');
-            const itemWidth = 124; // Width + margin
-            const winningIndex = 35; // Target item inside array
-            const offset = -(winningIndex * itemWidth) + (reel.parentElement.clientWidth / 2) - (itemWidth / 2);
-
-            audio.playClick();
-            
-            // CSS Animation
-            reel.style.transition = 'transform 5s cubic-bezier(0.1, 1, 0.1, 1)';
-            reel.style.transform = `translateX(${offset}px)`;
-
-            setTimeout(() => {
-                audio.playWin();
-                state.isCaseSpinning = false;
-                document.getElementById('btn-open-case').disabled = false;
-                
-                // Get Won Item
-                const winningCard = reel.children[winningIndex];
-                const item = JSON.parse(winningCard.dataset.item);
-                state.inventory.push(item);
-                renderInventory();
-
-                alert(`🎉 You won: ${item.name} (${item.value} Coins)! Stored in Vault.`);
-            }, 5000);
-        }
-
-        /* --- 2. CRASH GAME LOGIC --- */
+        /* --- 1. CRASH GAME LOGIC --- */
         let crashCanvas, crashCtx;
 
         function initCrashCanvas() {
-            crashCanvas = document.getElementById('crashCanvas');
+            crashCanvas = document.getElementById('crashGraphCanvas');
             crashCtx = crashCanvas.getContext('2d');
             resizeCrashCanvas();
             window.addEventListener('resize', resizeCrashCanvas);
+            drawCrashCurve(1.00);
         }
 
         function resizeCrashCanvas() {
@@ -767,207 +888,240 @@
             crashCanvas.height = crashCanvas.parentElement.clientHeight;
         }
 
-        function handleCrashAction() {
+        function renderCrashHistory() {
+            const bar = document.getElementById('crash-history-bar');
+            bar.innerHTML = '';
+            state.crash.history.forEach(mult => {
+                const chip = document.createElement('span');
+                let colorClass = 'bg-gray-800 text-gray-300';
+                if(mult >= 2.0) colorClass = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                if(mult >= 10.0) colorClass = 'bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                if(mult >= 50.0) colorClass = 'bg-purple-500/20 text-purple-400 border border-purple-500/30';
+
+                chip.className = `px-3 py-1 rounded-xl text-xs font-black flex-shrink-0 ${colorClass}`;
+                chip.textContent = mult.toFixed(2) + 'x';
+                bar.appendChild(chip);
+            });
+        }
+
+        function initFakePlayersFeed() {
+            const feed = document.getElementById('crash-players-feed');
+            const names = ['CryptoKing', 'Alex_1win', 'Sasha99', 'NeonRider', 'VipBetter', 'LuckyStrike'];
+            feed.innerHTML = '';
+            names.forEach(name => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between items-center bg-brand-dark/60 p-2 rounded-xl border border-gray-800/80';
+                row.innerHTML = `
+                    <span class="font-bold text-gray-300">${name}</span>
+                    <span class="text-gray-400">$${(Math.random()*500+50).toFixed(0)}</span>
+                    <span class="text-emerald-400 font-bold">${(Math.random()*3+1.1).toFixed(2)}x</span>
+                `;
+                feed.appendChild(row);
+            });
+        }
+
+        function handleCrashBtn() {
             const btn = document.getElementById('btn-crash-action');
             if(!state.crash.running) {
-                const bet = parseInt(document.getElementById('crash-bet-amount').value);
-                if(!deductCoins(bet)) return;
+                const bet = parseFloat(document.getElementById('crash-bet-input').value);
+                if(state.balance < bet) { alert('Not enough funds!'); return; }
 
+                state.balance -= bet;
+                updateUIHeader();
                 state.crash.bet = bet;
                 state.crash.hasBet = true;
                 state.crash.running = true;
                 state.crash.multiplier = 1.00;
-                // Exponential random crash point
-                state.crash.crashPoint = Math.max(1.05, (Math.pow(Math.random(), -1) * 0.95).toFixed(2));
+                state.crash.crashPoint = Math.max(1.02, (Math.pow(Math.random(), -1) * 0.96).toFixed(2));
 
-                btn.textContent = 'Cashout';
-                btn.className = "w-full py-4 bg-gradient-to-r from-yellow-500 to-amber-600 text-dark-900 font-black rounded-xl uppercase tracking-wider text-sm";
-                
-                document.getElementById('crash-status-text').textContent = "ROCKET FLYING...";
+                btn.innerHTML = '<span class="text-black">CASHOUT</span>';
+                btn.className = "w-full py-4 bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 text-dark-900 font-black rounded-2xl text-base tracking-wider uppercase shadow-neon-gold transition-all transform active:scale-95";
+
+                document.getElementById('crash-status-sub').textContent = 'ROCKET IS IN FLIGHT!';
                 runCrashLoop();
             } else if(state.crash.hasBet) {
-                // Cashout early
-                const winAmt = Math.floor(state.crash.bet * state.crash.multiplier);
-                addCoins(winAmt);
-                audio.playWin();
+                // Cashout
+                const win = state.crash.bet * state.crash.multiplier;
+                state.balance += win;
+                updateUIHeader();
+                audioSynth.playWinFanfare();
                 state.crash.hasBet = false;
-                btn.textContent = 'Cashed Out!';
+
+                btn.innerHTML = '<span class="text-black font-extrabold">CASHED OUT!</span>';
                 btn.disabled = true;
-                document.getElementById('crash-status-text').textContent = `Cashed out at ${state.crash.multiplier.toFixed(2)}x (+${winAmt} C)`;
+                document.getElementById('crash-status-sub').textContent = `CASHED OUT AT ${state.crash.multiplier.toFixed(2)}x (+$${win.toFixed(2)})`;
             }
         }
 
         function runCrashLoop() {
             if(!state.crash.running) return;
 
-            state.crash.multiplier += 0.008 * Math.pow(state.crash.multiplier, 1.05);
-            document.getElementById('crash-multiplier-text').textContent = state.crash.multiplier.toFixed(2) + 'x';
+            state.crash.multiplier += 0.006 * Math.pow(state.crash.multiplier, 1.08);
+            document.getElementById('crash-mult-hud').textContent = state.crash.multiplier.toFixed(2) + 'x';
 
-            // Auto cashout check
-            const autoMult = parseFloat(document.getElementById('crash-auto-cashout').value);
-            if(state.crash.hasBet && state.crash.multiplier >= autoMult) {
-                handleCrashAction();
+            const autoCashout = parseFloat(document.getElementById('crash-auto-cashout').value);
+            if(state.crash.hasBet && state.crash.multiplier >= autoCashout) {
+                handleCrashBtn();
             }
 
-            // Draw Chart
-            drawCrashChart();
+            drawCrashCurve(state.crash.multiplier);
 
             if(state.crash.multiplier >= state.crash.crashPoint) {
-                // CRASHED
-                audio.playExplode();
+                // Crashed
+                audioSynth.playExplosion();
                 state.crash.running = false;
-                document.getElementById('crash-multiplier-text').textContent = 'CRASHED!';
-                document.getElementById('crash-multiplier-text').classList.add('text-red-500');
-                document.getElementById('crash-status-text').textContent = `Crashed at ${state.crash.crashPoint}x`;
+                document.getElementById('crash-mult-hud').textContent = 'CRASHED!';
+                document.getElementById('crash-status-sub').textContent = `FLEW AWAY AT ${state.crash.crashPoint}x`;
+
+                state.crash.history.unshift(parseFloat(state.crash.crashPoint));
+                if(state.crash.history.length > 10) state.crash.history.pop();
+                renderCrashHistory();
 
                 const btn = document.getElementById('btn-crash-action');
-                btn.textContent = 'Place Bet';
+                btn.innerHTML = '<span class="text-black">PLACE BET</span>';
                 btn.disabled = false;
-                btn.className = "w-full py-4 bg-gradient-to-r from-neon-cyan to-blue-600 text-dark-900 font-black rounded-xl uppercase tracking-wider text-sm";
-
-                setTimeout(() => {
-                    document.getElementById('crash-multiplier-text').classList.remove('text-red-500');
-                }, 2000);
+                btn.className = "w-full py-4 bg-gradient-to-r from-brand-accent via-cyan-400 to-blue-600 text-dark-900 font-black rounded-2xl text-base tracking-wider uppercase shadow-neon-cyan transition-all transform active:scale-95";
             } else {
                 requestAnimationFrame(runCrashLoop);
             }
         }
 
-        function drawCrashChart() {
+        function drawCrashCurve(mult) {
             const w = crashCanvas.width;
             const h = crashCanvas.height;
             crashCtx.clearRect(0, 0, w, h);
 
-            // Draw Grid Lines
-            crashCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-            crashCtx.lineWidth = 1;
-            for(let i = 0; i < w; i += 40) {
-                crashCtx.beginPath(); crashCtx.moveTo(i, 0); crashCtx.lineTo(i, h); crashCtx.stroke();
-            }
+            const progress = Math.min(1, (mult - 1) / 10);
+            const endX = w * 0.85 * progress;
+            const endY = h - (h * 0.75 * progress);
 
-            // Curve Progress
-            const progress = Math.min(1, (state.crash.multiplier - 1) / 10);
-            const endX = w * 0.8 * progress;
-            const endY = h - (h * 0.7 * progress);
-
-            // Curve Line
+            // Curve Trail
             crashCtx.beginPath();
             crashCtx.moveTo(0, h);
-            crashCtx.quadraticCurveTo(endX * 0.5, h, endX, endY);
-            crashCtx.strokeStyle = state.crash.multiplier >= state.crash.crashPoint ? '#FF2A6D' : '#00F3FF';
-            crashCtx.lineWidth = 4;
+            crashCtx.quadraticCurveTo(endX * 0.4, h, endX, endY);
+            crashCtx.strokeStyle = '#00f0ff';
+            crashCtx.lineWidth = 5;
             crashCtx.stroke();
 
-            // Rocket Icon Position
+            // Flying Rocket Point
             if(state.crash.running) {
-                crashCtx.fillStyle = '#FFD700';
+                crashCtx.fillStyle = '#ffd700';
                 crashCtx.beginPath();
-                crashCtx.arc(endX, endY, 8, 0, Math.PI * 2);
+                crashCtx.arc(endX, endY, 10, 0, Math.PI * 2);
                 crashCtx.fill();
             }
         }
 
-        /* --- 3. ROULETTE LOGIC --- */
-        let rouletteAngle = 0;
-        let selectedRouletteChip = null;
-
-        function initRouletteWheel() {
-            const svg = document.getElementById('roulette-wheel-svg');
-            const segments = [
-                { color: '#FF2A6D', label: 'RED' },
-                { color: '#1A202C', label: 'BLK' },
-                { color: '#FF2A6D', label: 'RED' },
-                { color: '#1A202C', label: 'BLK' },
-                { color: '#FFD700', label: 'GOLD' },
-                { color: '#FF2A6D', label: 'RED' },
-                { color: '#1A202C', label: 'BLK' },
-                { color: '#00F3FF', label: 'DIA' }
-            ];
-
-            const total = segments.length;
-            const arc = (2 * Math.PI) / total;
-            let html = '';
-
-            segments.forEach((seg, i) => {
-                const angle = i * arc;
-                const x1 = 100 + 90 * Math.cos(angle);
-                const y1 = 100 + 90 * Math.sin(angle);
-                const x2 = 100 + 90 * Math.cos(angle + arc);
-                const y2 = 100 + 90 * Math.sin(angle + arc);
-
-                html += `<path d="M100,100 L${x1},${y1} A90,90 0 0,1 ${x2},${y2} Z" fill="${seg.color}" stroke="#090a0f" stroke-width="2"/>`;
-            });
-
-            svg.innerHTML = html;
+        /* --- 2. CASE OPENING LOGIC --- */
+        function selectCase(type) {
+            audioSynth.playTick();
+            state.cases.selected = CASES_DB[type];
+            document.getElementById('active-case-name').textContent = `${state.cases.selected.name} ($${state.cases.selected.cost})`;
+            document.getElementById('btn-open-1x').disabled = false;
+            document.getElementById('btn-open-fast').disabled = false;
+            buildCaseStrip();
         }
 
-        function placeRouletteBet(type) {
-            audio.playClick();
-            selectedRouletteChip = type;
-            document.querySelectorAll('[id^="chip-"]').forEach(el => el.classList.remove('ring-4', 'ring-yellow-400'));
-            document.getElementById(`chip-${type}`).classList.add('ring-4', 'ring-yellow-400');
+        function buildCaseStrip() {
+            const strip = document.getElementById('case-reel-strip');
+            strip.innerHTML = '';
+            strip.style.transform = 'translateX(0px)';
+
+            for(let i = 0; i < 50; i++) {
+                const item = ITEMS_SAMPLE_DB[Math.floor(Math.random() * ITEMS_SAMPLE_DB.length)];
+                const rarity = ITEM_RARITIES[item.rarity];
+                const card = document.createElement('div');
+                card.className = `w-32 h-36 flex-shrink-0 glass-card rounded-2xl border-b-4 ${rarity.border} flex flex-col items-center justify-center p-2 relative`;
+                card.innerHTML = `
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2" style="background:${rarity.color}20">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="${rarity.color}">
+                            <polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-extrabold text-white text-center truncate w-full">${item.name}</span>
+                    <span class="text-[10px] text-brand-accent font-black">$${item.value}</span>
+                `;
+                card.dataset.item = JSON.stringify(item);
+                strip.appendChild(card);
+            }
         }
 
-        function spinRoulette() {
-            if(!selectedRouletteChip) { alert("Select a color chip to bet on!"); return; }
-            const bet = parseInt(document.getElementById('roulette-bet-amount').value);
-            if(!deductCoins(bet)) return;
+        function spinCase(qty, isFast = false) {
+            if(!state.cases.selected || state.balance < state.cases.selected.cost) return;
 
-            audio.playClick();
-            const wheel = document.getElementById('roulette-wheel-svg');
-            const spins = 5 + Math.random() * 5;
-            rouletteAngle += spins * 360;
-            wheel.style.transition = 'transform 4s cubic-bezier(0.15, 0.9, 0.2, 1)';
-            wheel.style.transform = `rotate(${rouletteAngle}deg)`;
+            state.balance -= state.cases.selected.cost;
+            updateUIHeader();
+            buildCaseStrip();
+
+            const strip = document.getElementById('case-reel-strip');
+            const itemWidth = 140; 
+            const targetIdx = 38;
+            const offset = -(targetIdx * itemWidth) + (strip.parentElement.clientWidth / 2) - (itemWidth / 2);
+
+            const duration = isFast ? 1000 : 4500;
+            strip.style.transition = `transform ${duration}ms cubic-bezier(0.1, 1, 0.1, 1)`;
+            strip.style.transform = `translateX(${offset}px)`;
 
             setTimeout(() => {
-                audio.playWin();
-                // Determine winning segment randomly
-                const types = ['red', 'black', 'gold', 'diamond'];
-                const outcome = types[Math.floor(Math.random() * types.length)];
-                
-                let mult = 0;
-                if(outcome === 'red' || outcome === 'black') mult = 2;
-                if(outcome === 'gold') mult = 14;
-                if(outcome === 'diamond') mult = 50;
-
-                if(selectedRouletteChip === outcome) {
-                    const win = bet * mult;
-                    addCoins(win);
-                    document.getElementById('roulette-result').textContent = `🎉 Won ${win} Coins (${outcome.toUpperCase()})!`;
-                } else {
-                    document.getElementById('roulette-result').textContent = `Landed on ${outcome.toUpperCase()}. Try again!`;
-                }
-            }, 4000);
+                audioSynth.playWinFanfare();
+                const winningCard = strip.children[targetIdx];
+                const item = JSON.parse(winningCard.dataset.item);
+                showWonItemModal(item);
+            }, duration);
         }
 
-        /* --- 4. MINES GAME LOGIC --- */
-        function updateMinesSlider(val) {
-            document.getElementById('mines-count-label').textContent = val;
+        function showWonItemModal(item) {
+            state.wonModalItem = item;
+            document.getElementById('modal-item-name').textContent = item.name;
+            document.getElementById('modal-item-val').textContent = `$${item.value.toLocaleString()}`;
+            document.getElementById('item-win-modal').classList.remove('hidden');
+        }
+
+        function claimWonItemModal() {
+            if(state.wonModalItem) {
+                state.inventory.push(state.wonModalItem);
+                renderInventoryGrid();
+                updateUIHeader();
+            }
+            document.getElementById('item-win-modal').classList.add('hidden');
+        }
+
+        function sellWonItemModal() {
+            if(state.wonModalItem) {
+                state.balance += state.wonModalItem.value;
+                updateUIHeader();
+            }
+            document.getElementById('item-win-modal').classList.add('hidden');
+        }
+
+        /* --- 3. MINES LOGIC --- */
+        function onMinesSliderChange(val) {
+            document.getElementById('mines-count-display').textContent = val;
             state.mines.count = parseInt(val);
         }
 
-        function initMinesGrid() {
-            const grid = document.getElementById('mines-grid');
+        function initMinesBoard() {
+            const grid = document.getElementById('mines-grid-board');
             grid.innerHTML = '';
             for(let i = 0; i < 25; i++) {
                 const tile = document.createElement('button');
-                tile.className = "w-full h-full bg-dark-800 hover:bg-dark-700 border border-gray-700/60 rounded-xl transition-all flex items-center justify-center font-bold text-lg";
-                tile.onclick = () => revealMineTile(i);
+                tile.className = "w-full h-full bg-brand-dark/90 hover:bg-gray-800 border border-gray-700/80 rounded-2xl transition-all flex items-center justify-center font-bold text-lg";
+                tile.onclick = () => revealMinesTile(i);
                 grid.appendChild(tile);
             }
         }
 
         function startMinesGame() {
-            const bet = parseInt(document.getElementById('mines-bet-amount').value);
-            if(!deductCoins(bet)) return;
+            const bet = parseFloat(document.getElementById('mines-bet-input').value);
+            if(state.balance < bet) return;
 
+            state.balance -= bet;
+            updateUIHeader();
             state.mines.active = true;
             state.mines.bet = bet;
             state.mines.revealed = 0;
             state.mines.multiplier = 1.00;
-            
-            // Random bomb placement
+
             state.mines.grid = Array(25).fill(false);
             let placed = 0;
             while(placed < state.mines.count) {
@@ -978,135 +1132,169 @@
                 }
             }
 
-            initMinesGrid();
+            initMinesBoard();
             document.getElementById('btn-mines-start').disabled = true;
             document.getElementById('btn-mines-cashout').disabled = false;
-            updateMinesStats();
         }
 
-        function revealMineTile(idx) {
+        function revealMinesTile(idx) {
             if(!state.mines.active) return;
-            const grid = document.getElementById('mines-grid');
+            const grid = document.getElementById('mines-grid-board');
             const tile = grid.children[idx];
-
             if(tile.disabled) return;
+
             tile.disabled = true;
 
             if(state.mines.grid[idx]) {
-                // BOOM - Hit bomb
-                audio.playExplode();
-                tile.className = "w-full h-full bg-red-600/80 border border-red-500 rounded-xl flex items-center justify-center";
+                // BOOM
+                audioSynth.playExplosion();
+                tile.className = "w-full h-full bg-rose-600/80 border border-rose-500 rounded-2xl flex items-center justify-center";
                 tile.innerHTML = "💣";
-                endMinesGame(false);
+                state.mines.active = false;
+                document.getElementById('btn-mines-start').disabled = false;
+                document.getElementById('btn-mines-cashout').disabled = true;
             } else {
-                // Safe
-                audio.playClick();
+                // SAFE
+                audioSynth.playTick();
                 state.mines.revealed++;
-                state.mines.multiplier *= (1 + (state.mines.count / 20));
-                tile.className = "w-full h-full bg-green-500/20 border border-green-500 rounded-xl flex items-center justify-center text-green-400 font-bold";
+                state.mines.multiplier *= (1 + (state.mines.count / 18));
+                tile.className = "w-full h-full bg-emerald-500/20 border border-emerald-400 rounded-2xl flex items-center justify-center text-emerald-400 font-bold";
                 tile.innerHTML = "💎";
-                updateMinesStats();
-            }
-        }
 
-        function updateMinesStats() {
-            document.getElementById('mines-next-mult').textContent = state.mines.multiplier.toFixed(2) + 'x';
-            document.getElementById('mines-cashout-val').textContent = Math.floor(state.mines.bet * state.mines.multiplier) + ' Coins';
+                document.getElementById('mines-next-mult').textContent = state.mines.multiplier.toFixed(2) + 'x';
+                document.getElementById('mines-cashout-val').textContent = '$' + (state.mines.bet * state.mines.multiplier).toFixed(2);
+            }
         }
 
         function cashoutMines() {
             if(!state.mines.active) return;
-            const win = Math.floor(state.mines.bet * state.mines.multiplier);
-            addCoins(win);
-            audio.playWin();
-            endMinesGame(true);
-        }
+            const win = state.mines.bet * state.mines.multiplier;
+            state.balance += win;
+            audioSynth.playWinFanfare();
+            updateUIHeader();
 
-        function endMinesGame(won) {
             state.mines.active = false;
             document.getElementById('btn-mines-start').disabled = false;
             document.getElementById('btn-mines-cashout').disabled = true;
-
-            // Reveal all
-            const grid = document.getElementById('mines-grid');
-            state.mines.grid.forEach((isBomb, i) => {
-                if(isBomb) {
-                    grid.children[i].innerHTML = "💣";
-                }
-            });
         }
 
-        /* --- 5. TAPPER / VAULT --- */
-        function handleVaultTap(e) {
-            audio.playClick();
-            addCoins(5);
+        /* --- 4. WHEEL LOGIC --- */
+        let wheelAngle = 0;
+        function initWheelSVG() {
+            const svg = document.getElementById('wheel-svg');
+            const colors = ['#00f0ff', '#8a2be2', '#ffd700', '#ff0055', '#00ff88', '#3b82f6'];
+            let html = '';
+            for(let i = 0; i < 12; i++) {
+                const arc = (2 * Math.PI) / 12;
+                const angle = i * arc;
+                const x1 = 100 + 90 * Math.cos(angle);
+                const y1 = 100 + 90 * Math.sin(angle);
+                const x2 = 100 + 90 * Math.cos(angle + arc);
+                const y2 = 100 + 90 * Math.sin(angle + arc);
 
-            // Particle float effect
+                html += `<path d="M100,100 L${x1},${y1} A90,90 0 0,1 ${x2},${y2} Z" fill="${colors[i % colors.length]}" stroke="#07090e" stroke-width="2"/>`;
+            }
+            svg.innerHTML = html;
+        }
+
+        function spinWheelWithBet(mult) {
+            const bet = parseFloat(document.getElementById('wheel-bet-input').value);
+            if(state.balance < bet) return;
+
+            state.balance -= bet;
+            updateUIHeader();
+
+            const wheel = document.getElementById('wheel-svg');
+            wheelAngle += 1440 + Math.random() * 360;
+            wheel.style.transition = 'transform 4s cubic-bezier(0.15, 0.9, 0.2, 1)';
+            wheel.style.transform = `rotate(${wheelAngle}deg)`;
+
+            setTimeout(() => {
+                const win = bet * mult;
+                state.balance += win;
+                audioSynth.playWinFanfare();
+                updateUIHeader();
+                document.getElementById('wheel-result-hud').textContent = `🎉 WON $${win.toFixed(2)} (${mult}X)!`;
+            }, 4000);
+        }
+
+        /* --- 5. CLICKER & REWARDS --- */
+        function handleVaultCoreTap(e) {
+            audioSynth.playTick();
+            state.balance += 100;
+            updateUIHeader();
+
             const floatingText = document.createElement('div');
-            floatingText.className = 'fixed font-black text-yellow-400 pointer-events-none text-lg transition-all duration-500';
-            floatingText.textContent = '+5';
+            floatingText.className = 'fixed font-black text-brand-accent text-xl pointer-events-none transition-all duration-500 z-50';
+            floatingText.textContent = '+$100';
             floatingText.style.left = `${e.clientX}px`;
             floatingText.style.top = `${e.clientY - 20}px`;
             document.body.appendChild(floatingText);
 
             setTimeout(() => {
-                floatingText.style.transform = 'translateY(-30px)';
+                floatingText.style.transform = 'translateY(-40px)';
                 floatingText.style.opacity = '0';
             }, 50);
-
-            setTimeout(() => floatingText.remove(), 500);
+            setTimeout(() => floatingText.remove(), 550);
         }
 
-        function claimDailyBonus() {
-            audio.playWin();
-            addCoins(500);
-            alert("🎁 Claimed Daily Reward: +500 Coins!");
-            document.getElementById('btn-daily-bonus').disabled = true;
-            document.getElementById('btn-daily-bonus').classList.add('opacity-50');
+        function claimDailyRewardStreak() {
+            state.balance += 1000;
+            audioSynth.playWinFanfare();
+            updateUIHeader();
+            alert("🎁 Claimed $1,000 Daily Bonus!");
         }
 
-        /* --- 6. INVENTORY / VAULT LOGIC --- */
-        function renderInventory() {
-            const grid = document.getElementById('inventory-grid');
+        /* --- 6. INVENTORY & CONTRACTS --- */
+        function renderInventoryGrid() {
+            const grid = document.getElementById('inventory-grid-container');
             grid.innerHTML = '';
-
-            let totalValue = 0;
-
             state.inventory.forEach((item, idx) => {
-                totalValue += item.value;
+                const rarity = ITEM_RARITIES[item.rarity];
                 const card = document.createElement('div');
-                card.className = `glass-card p-3 rounded-xl border-b-4 ${item.border} flex flex-col items-center relative`;
+                card.className = `glass-card p-3 rounded-2xl border-b-4 ${rarity.border} flex flex-col items-center`;
                 card.innerHTML = `
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center my-1" style="background:${item.color}20">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="${item.color}">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2" style="background:${rarity.color}20">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="${rarity.color}">
                             <polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2"/>
                         </svg>
                     </div>
-                    <span class="text-xs font-bold text-gray-200 truncate w-full text-center mt-1">${item.name}</span>
-                    <span class="text-[10px] text-yellow-400 font-bold mb-2">${item.value} C</span>
-                    <button onclick="sellItem(${idx})" class="w-full py-1 bg-red-500/20 hover:bg-red-500/40 text-red-300 font-bold rounded text-[10px] border border-red-500/30">Sell</button>
+                    <span class="text-xs font-bold text-white truncate w-full text-center">${item.name}</span>
+                    <span class="text-xs font-black text-brand-accent my-1">$${item.value}</span>
+                    <button onclick="sellInventoryItem(${idx})" class="w-full py-1 bg-rose-500/20 text-rose-300 font-bold rounded-lg text-[10px]">Sell</button>
                 `;
                 grid.appendChild(card);
             });
-
-            document.getElementById('inventory-total-value').textContent = `${totalValue.toLocaleString()} Coins`;
         }
 
-        function sellItem(idx) {
-            audio.playClick();
+        function sellInventoryItem(idx) {
             const item = state.inventory[idx];
-            addCoins(item.value);
+            state.balance += item.value;
             state.inventory.splice(idx, 1);
-            renderInventory();
+            renderInventoryGrid();
+            updateUIHeader();
         }
 
-        function sellAllItems() {
-            if(state.inventory.length === 0) return;
-            audio.playWin();
-            const total = state.inventory.reduce((acc, item) => acc + item.value, 0);
-            addCoins(total);
+        function sellAllInventory() {
+            const total = state.inventory.reduce((a, b) => a + b.value, 0);
+            state.balance += total;
             state.inventory = [];
-            renderInventory();
+            renderInventoryGrid();
+            updateUIHeader();
+        }
+
+        function triggerContractUpgrade() {
+            if(state.inventory.length < 5) {
+                alert("Need at least 5 items in inventory for contract upgrade!");
+                return;
+            }
+            state.inventory.splice(0, 5);
+            const upgradedItem = { name: "Karambit Gold Doppler", value: 3200, rarity: "immortal" };
+            state.inventory.push(upgradedItem);
+            audioSynth.playWinFanfare();
+            renderInventoryGrid();
+            updateUIHeader();
+            alert("✨ Contract Upgrade Successful! Generated Karambit Gold Doppler ($3,200)!");
         }
     </script>
 </body>
